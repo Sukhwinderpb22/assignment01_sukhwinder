@@ -1,6 +1,5 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Button } from 'reactstrap';
 import products from './products';
 import './ProductDetail.css';
 
@@ -13,10 +12,10 @@ function ProductDetail({ onAddToCart }) {
     return <div className="productDetail">Product not found</div>;
   }
 
-  const handleAddToCart = () => {
+  function handleAddToCart() {
     onAddToCart(product);
     navigate('/cart');
-  };
+  }
 
   return (
     <div className="productDetail">
@@ -27,9 +26,9 @@ function ProductDetail({ onAddToCart }) {
       <p>Price: ${product.price}</p>
 
       <div className="addToCartButton">
-        <Button color="primary" onClick={handleAddToCart}>
+        <button className="custom-button" onClick={handleAddToCart}>
           Add to Cart
-        </Button>
+        </button>
       </div>
     </div>
   );

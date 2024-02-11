@@ -5,17 +5,18 @@ import './ProductsPage.css';
 
 const ProductsPage = ({ handleAddToCart }) => {
   const navigate = useNavigate();
+  navigate('/cart');
 
   const displayProductDetails = (product) => {
     navigate(`/product/${product.id}`);
   };
 
   return (
-    <div className="productsContent">
+    <div className="productList">
       {products.map((product) => (
         <div key={product.id} className="productCard">
-          <img className="productImage" src={product.image} alt="" />
-          <div className="productDetails">
+          <img className="productPic" src={product.image} alt="" />
+          <div className="detailOfProduct">
             <h5 className="productName">{product.name}</h5>
             <p className="productDescription">{product.description}</p>
             <p>Price: ${product.price}</p>

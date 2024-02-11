@@ -1,4 +1,6 @@
+/* ProductsPage.css */
 
+/* Style for */
 .header {
     display: flex;
     justify-content: space-between;
@@ -28,8 +30,12 @@
     transition: background-color 0.3s;
 }
 
+.header-button:hover {
+    background-color: #45a049;
+}
+
 /* Product Container Styles */
-.productContent {
+.productList {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -43,13 +49,13 @@
     overflow: hidden;
 }
 
-.productImage {
+.productPic {
     width: 100%;
     height: 300px;
     object-fit: cover;
 }
 
-.productDetails {
+.detailOfProduct {
     padding: 10px;
 }
 
@@ -78,3 +84,4 @@
     cursor: pointer;
     transition: background-color 0.3s;
 }
+

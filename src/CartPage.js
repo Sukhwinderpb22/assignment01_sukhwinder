@@ -9,67 +9,56 @@ function CartPage({ cart, handleUpdateCart, handleRemoveFromCart, handleFinalize
   }
 
   function changeFinalPurchase() {
-  handleFinalizePurchase();
-  setPurchaseComplete(true);
-}
-
-function CartItem({ item, handleUpdateCart, handleRemoveFromCart }) {
-  return (
-    <div className="cartPics">
-      <img src={item.image} alt={item.name} className="item-image" />
-      <div className="">
-        <h5 className="productDetails">{item.name}</h5>
-        <p className="productPrice">${item.price.toFixed(2)} x </p>
-        <div className="productQuantity">
-          <button
-            className="productQuantityButton"
-            onClick={() => handleUpdateCart(item, item.quantity - 1)}
-          >
-            -
-          </button>
-          <input
-            type="number"
-            value={item.quantity}
-            readOnly
-            className="quantityBox"
-          />
-          <button
-            className="addButton"
-            onClick={() => handleUpdateCart(item, item.quantity + 1)}
-          >
-            +
-          </button>
-        </div>
-        <button
-          className="removeButton"
-          onClick={() => handleRemoveFromCart(item)}
-        >
-          Remove
-        </button>
-      </div>
-    </div>
-  );
-}
+    handleFinalizePurchase();
+    setPurchaseComplete(true);
+  }
 
   return (
     <div className="cart-page">
       <h2>Shopping Cart</h2>
       <div className="cart-container">
         {cart.map((item) => (
-          <CartItem
-            key={item.id}
-            item={item}
-            handleUpdateCart={handleUpdateCart}
-            handleRemoveFromCart={handleRemoveFromCart}
-          />
+          <div className="cartPicCard" key={item.id}>
+            <img src={item.image} alt={item.name} className="itemImage" />
+            <div className="item-details">
+              <h5 className="item-name">{item.name}</h5>
+              <p className="item-price">${item.price.toFixed(2)} x </p>
+              <div className="quantity-container">
+                <button
+                  className="quantity-button"
+                  onClick={() => handleUpdateCart(item, item.quantity - 1)}
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  value={item.quantity}
+                  readOnly
+                  className="quantity-input"
+                />
+                <button
+                  className="quantity-button"
+                  onClick={() => handleUpdateCart(item, item.quantity + 1)}
+                >
+                  +
+                </button>
+              </div>
+              <button
+                className="remove-button"
+                onClick={() => handleRemoveFromCart(item)}
+              >
+                Remove
+              </button>
+            </div>
+          </div>
         ))}
       </div>
       {cart.length > 0 && (
-        <div className="finalizeButton">
+        <div className="finalize-button-container">
           <p className="total-text">Total: ${calculateTotalPurchase()}</p>
           {purchaseComplete ? (
-            <p>Thanks for shopping</p>) : 
-            (
+            <p className="thanks-message">Thanks for shopping</p>
+          ) : (
             <button
               className="finalize-button"
               onClick={changeFinalPurchase}

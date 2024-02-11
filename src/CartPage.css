@@ -14,7 +14,7 @@ h2 {
   gap: 20px;
 }
 
-.cartPics {
+.cartPicCard {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -22,8 +22,11 @@ h2 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
 
+  &:hover {
+    transform: scale(1.05);
+  }
 
-  img {
+  .itemImage {
     max-width: 100%;
     height: 150px;
     border-radius: 4px;
@@ -45,7 +48,7 @@ h2 {
     color: #777;
   }
 
-  .quantityBox {
+  .quantity-input {
     width: 50px;
     margin: 0 10px;
     padding: 5px;
@@ -53,7 +56,7 @@ h2 {
     border-radius: 4px;
   }
 
-  .removeButton {
+  .remove-button {
     background-color: #dc3545;
     color: #fff;
     border: none;
@@ -62,7 +65,7 @@ h2 {
   }
 }
 
-.finalizeButton {
+.finalize-button-container {
   margin-top: 20px;
   text-align: center;
 }
@@ -72,7 +75,7 @@ h2 {
   margin-bottom: 10px;
 }
 
-.finalizeButton {
+.finalize-button {
   background-color: #28a745;
   color: #fff;
   border: none;
