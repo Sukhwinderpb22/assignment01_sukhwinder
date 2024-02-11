@@ -1,0 +1,44 @@
+
+.productDetail {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Style for heading */
+  h2 {
+    color: #333;
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
+  
+  /* Style for Image */
+  img {
+    width: 200px;
+    max-width: 400px;
+    height: 200px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+  }
+  
+  /* Style for Description */
+  p {
+    color: #555;
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  
+  /* Style for buttons */
+  .addToCartButton {
+    text-align: center;
+  }
+  
+  .addToCartButton button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+  }
+  

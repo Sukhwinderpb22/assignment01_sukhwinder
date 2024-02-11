@@ -1,90 +1,130 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useParams } from 'react-router-dom';
 import ProductsPage from './ProductsPage';
 import ProductDetail from './ProductDetail';
 import CartPage from './CartPage';
 import AccountPage from './AccountPage';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Navbar, Nav, NavItem, NavLink } from 'reactstrap';
+import products from './products';
+import './App.css';
 
-const App = () => {
-  const [cart, setCart] = useState([]);
-  const [userDetails, setUserDetails] = useState({ name: '', email: '', address: '' });
+class App extends Component {
+  constructor(props) {
+    super(props);
 
-  const handleAddToCart = (product) => {
+    this.state = {
+      cart: [],
+      userDetails: {
+        firstName: 'Sukhwinder',
+        lastName: 'Singh',
+        email: 'sukhwinders0004@gmail.com',
+        mobileNumber: '289-260-9211',
+        address: '45 falconridge drive, N2V0G1',
+      },
+      purchaseComplete: false,
+    };
+  }
+
+  addItemInCart = (product) => {
+    const { cart } = this.state;
     const existingProduct = cart.find(item => item.id === product.id);
     if (existingProduct) {
-      setCart(cart.map(item => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item));
+      this.setState({
+        cart: cart.map(item => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item),
+      });
     } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
+      this.setState({
+        cart: [...cart, { ...product, quantity: 1 }],
+      });
     }
-  };
-
-  const handleUpdateCart = (product, quantity) => {
+  }
+  updateCart = (product, quantity) => {
+    const { cart } = this.state;
     if (quantity <= 0) {
-      setCart(cart.filter(item => item.id !== product.id));
+      this.setState({
+        cart: cart.filter(item => item.id !== product.id),
+      });
     } else {
-      setCart(cart.map(item => item.id === product.id ? { ...item, quantity } : item));
+      this.setState({
+        cart: cart.map(item => item.id === product.id ? { ...item, quantity } : item),
+      });
     }
-  };
+  }
+  removeItemFromCart = (product) => {
+    const { cart } = this.state;
+    this.setState({
+      cart: cart.filter(item => item.id !== product.id),
+    });
+  }
+  updateUserDetails = (updatedUser) => {
+    this.setState({
+      userDetails: updatedUser,
+    });
+  }
+  finalizePurchase = () => {
+    this.setState({
+      purchaseComplete: true,
+    });
+  }
 
-  const handleRemoveFromCart = (product) => {
-    setCart(cart.filter(item => item.id !== product.id));
-  };
-
-  const handleUpdateUserDetails = (details) => {
-    setUserDetails(details);
-  };
-
-  // Wrapper component to pass additional props
-  const ProductDetailWrapper = () => {
+  ProductDetailCombine = () => {
     const { id } = useParams();
+    const { cart } = this.state;
     const product = cart.find(p => p.id.toString() === id);
-    return <ProductDetail product={product} onAddToCart={handleAddToCart} />;
-  };
+    return <ProductDetail product={product} onAddToCart={this.addItemInCart} />;
+  }
 
-  return (
-    <Router>
-      <Navbar color="light" light expand="md">
-        <Nav className="mr-auto" navbar>
-          <NavItem>
-            <NavLink tag={Link} to="/">Home</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink tag={Link} to="/cart">Cart</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink tag={Link} to="/account">Account</NavLink>
-          </NavItem>
-        </Nav>
-      </Navbar>
+  get totalCartItems() {
+    const { cart } = this.state;
+    return cart.reduce((total, item) => total + item.quantity, 0);
+  }
 
-      <Container>
+  render() {
+    const { cart, userDetails, purchaseComplete } = this.state;
+
+    return (
+      <Router>
+        <header className="header">
+          <h1 className="logo">Shoe Outlet</h1>
+
+          <nav className="navigation">
+            <ul className="navigationList">
+              <li className="navigationItem">
+                <Link to="/" className="navigationLink">Home</Link>
+              </li>
+              <li className="navigationItem">
+                <Link to="/cart" className="navigationLink">
+                  Cart {this.totalCartItems > 0 && 
+                  <span className="cart-count">({this.totalCartItems} items)</span>}
+                </Link>
+              </li>
+              <li className="navigationItem">
+                <Link to="/account" className="navigationLink">Account</Link>
+              </li>
+            </ul>
+          </nav>
+        </header>
+        <div className="productscollection">
         <Routes>
-          <Route path="/" element={<ProductsPage onAddToCart={handleAddToCart} />} />
-          <Route path="/product/:id" element={<ProductDetailWrapper />} />
-          <Route path="/cart" element={<CartPage cart={cart} onUpdateCart={handleUpdateCart} onRemoveFromCart={handleRemoveFromCart} />} />
-          <Route path="/account" element={<AccountPage userDetails={userDetails} onUpdateUserDetails={handleUpdateUserDetails} />} />
+        <Route path="/" element={<ProductsPage products={products}
+         handleAddToCart={this.addItemInCart} />} />
+        <Route path="/product/:id" element={<this.ProductDetailCombine />} />
+        <Route
+              path="/cart"
+              element={<CartPage cart={cart} handleUpdateCart={this.updateCart} 
+              handleRemoveFromCart={this.removeItemFromCart}
+               handleFinalizePurchase={this.finalizePurchase} 
+               purchaseComplete={purchaseComplete} />}
+          />
+        <Route path="/account" element={<AccountPage userDetails={userDetails}
+         handleUpdateUserDetails={this.updateUserDetails} />} />
         </Routes>
-      </Container>
+        </div>
+        <footer className="footer">
+        <p>@Sukhwinder Singh</p>
+        </footer>
+      </Router>
+    );
+  }
+}
 
-      {/* Footer Section */}
-      <footer className="text-center mt-4">
-        <p>Follow us on social media:</p>
-        <Nav className="justify-content-center">
-          <NavItem>
-            <NavLink href="https://twitter.com/">Twitter</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink href="https://facebook.com/">Facebook</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink href="https://instagram.com/">Instagram</NavLink>
-          </NavItem>
-        </Nav>
-      </footer>
-    </Router>
-  );
-};
-
-export default App;
+export default App;

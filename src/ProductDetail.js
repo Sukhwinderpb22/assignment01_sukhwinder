@@ -1,26 +1,38 @@
-// ProductDetail.js
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import products from './products';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from 'reactstrap';
+import products from './products';
+import './ProductDetail.css';
 
-const ProductDetail = ({ onAddToCart }) => {
-  // Fetch the product ID from URL parameters if not passed as a prop
+function ProductDetail({ onAddToCart }) {
+  const navigate = useNavigate();
   const { id } = useParams();
   const product = products.find(p => p.id.toString() === id);
 
   if (!product) {
-    return <div>Product not found</div>;
+    return <div className="productDetail">Product not found</div>;
   }
 
+  const handleAddToCart = () => {
+    onAddToCart(product);
+    navigate('/cart');
+  };
+
   return (
-    <div>
+    <div className="productDetail">
       <h2>{product.name}</h2>
-      <img src={product.imageUrl} alt={product.name} style={{ width: '100%', maxWidth: '400px' }} />
+      <img src={`/${product.image}`} alt={product.name} />
+
       <p>{product.description}</p>
-      <Button color="primary" onClick={() => onAddToCart(product)}>Add to Cart</Button>
+      <p>Price: ${product.price}</p>
+
+      <div className="addToCartButton">
+        <Button color="primary" onClick={handleAddToCart}>
+          Add to Cart
+        </Button>
+      </div>
     </div>
   );
-};
+}
 
-export default ProductDetail;
+export default ProductDetail;

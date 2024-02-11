@@ -1,31 +1,37 @@
 import React from 'react';
-import { Card, Button, CardImg, CardBody, CardTitle, CardText } from 'reactstrap';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate instead of useHistory
+import { useNavigate } from 'react-router-dom';
 import products from './products';
+import './ProductsPage.css';
 
-const ProductsPage = ({ onAddToCart }) => {
-  const navigate = useNavigate(); // Use useNavigate hook
+const ProductsPage = ({ handleAddToCart }) => {
+  const navigate = useNavigate();
 
-  const onShowDetails = (product) => {
-    navigate(`/Product/${product.id}`); // Use backticks for the template string
+  const displayProductDetails = (product) => {
+    navigate(`/product/${product.id}`);
   };
+
   return (
-    <div className="d-flex flex-wrap justify-content-center">
-      {products.map(product => (
-        <Card key={product.id} style={{ width: '18rem', margin: '10px' }}>
-          <CardImg top src={product.image} alt="Product image" />
-          <CardBody>
-            <CardTitle tag="h5">{product.name}</CardTitle>
-            <CardText>{product.description}</CardText>
-            <div className="d-flex justify-content-between">
-              <Button onClick={() => onAddToCart(product)}>Add to Cart</Button>
-              <Button onClick={() => onShowDetails(product)}>Details</Button>
+    <div className="productsContent">
+      {products.map((product) => (
+        <div key={product.id} className="productCard">
+          <img className="productImage" src={product.image} alt="" />
+          <div className="productDetails">
+            <h5 className="productName">{product.name}</h5>
+            <p className="productDescription">{product.description}</p>
+            <p>Price: ${product.price}</p>
+            <div className="productButtons">
+              <button className="addToCart" onClick={() => handleAddToCart(product)}>
+                Add to Cart
+              </button>
+              <button className="details" onClick={() => displayProductDetails(product)}>
+                Details
+              </button>
             </div>
-          </CardBody>
-        </Card>
+          </div>
+        </div>
       ))}
     </div>
   );
 };
 
-export default ProductsPage;
+export default ProductsPage;
